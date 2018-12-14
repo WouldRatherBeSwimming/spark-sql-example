@@ -1,0 +1,189 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>example</groupId>
+  <artifactId>test</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>${project.artifactId}</name>
+  <description>Vics scala example app</description>
+  <inceptionYear>2018</inceptionYear>
+  <licenses>
+    <license>
+      <name>My License</name>
+      <url>http://....</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+	<repositories>
+		<repository>
+			<id>cloudera</id>
+			<url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+		</repository>
+	</repositories>
+
+
+	<profiles>
+		<profile>
+			<id>scala-2.11.12</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<scalaVersion>2.11.12</scalaVersion>
+				<scalaBinaryVersion>2.11.12</scalaBinaryVersion>
+			</properties>
+			<dependencies>
+
+				<!-- ************************************************************************** -->
+				<!-- GOOD DEPENDENCIES +++++++++++++++++++++++++++++++++++++ -->
+				<!-- ************************************************************************** -->
+
+				<!-- https://mvnrepository.com/artifact/org.apache.spark/spark-streaming -->
+				<dependency>
+    				<groupId>org.apache.spark</groupId>
+    				<artifactId>spark-streaming_2.11</artifactId>
+				    <version>2.2.0.cloudera3</version>
+    				<scope>provided</scope>
+				</dependency>
+				
+
+<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-compress</artifactId>
+    <version>1.18</version>
+</dependency>
+
+
+				<dependency>
+					<groupId>gov.doe.netl.edx</groupId>
+				    <artifactId>spark-utils</artifactId>
+      				<version>2.3</version>
+    			</dependency>
+   	
+
+				<!-- https://www.cloudera.com/documentation/spark2/latest/topics/spark2_packaging.html#versions -->
+				<dependency>
+					<groupId>org.apache.spark</groupId>
+					<artifactId>spark-sql_2.11</artifactId>
+					<version>2.2.0.cloudera3</version>
+					<scope>provided</scope>
+				</dependency>
+
+
+				<!-- https://www.cloudera.com/documentation/spark2/latest/topics/spark2_packaging.html#versions -->
+				<dependency>
+					<groupId>org.apache.spark</groupId>
+					<artifactId>spark-core_2.11</artifactId>
+					<version>2.2.0.cloudera3</version>
+					<scope>provided</scope>
+				</dependency>
+				
+				<!-- 
+    			<dependency>
+      				<groupId>com.redislabs</groupId>
+      				<artifactId>spark-redis</artifactId>
+      				<version>2.3.0</version>
+    			</dependency>
+				-->
+    			
+    			<dependency>
+      				<groupId>com.redislabs</groupId>
+      				<artifactId>spark-connector</artifactId>
+      				<version>2.3.0</version>
+    			</dependency>
+
+  
+				<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+				<dependency>
+    				<groupId>org.postgresql</groupId>
+    				<artifactId>postgresql</artifactId>
+    				<version>42.2.5</version>
+				</dependency>
+		
+		
+				
+				
+				<!--
+				<dependency>
+					<groupId>org.json4s</groupId>
+					<artifactId>json4s-jackson_2.11</artifactId>
+					<version>3.6.0</version>
+				</dependency>
+
+				<dependency>
+					<groupId>org.json4s</groupId>
+					<artifactId>json4s-native_2.11</artifactId>
+					<version>3.6.0</version>
+				</dependency>
+				-->
+				
+			</dependencies>
+		</profile>
+	</profiles>
+
+
+	<build>
+		<sourceDirectory>src/main/scala</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>net.alchim31.maven</groupId>
+				<artifactId>scala-maven-plugin</artifactId>
+				<version>3.2.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<args>
+						<!-- work-around for https://issues.scala-lang.org/browse/SI-8358 -->
+						<arg>-nobootcp</arg>
+					</args>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<filters>
+						<filter>
+							<artifact>*:*</artifact>
+							<excludes>
+								<exclude>META-INF/*.SF</exclude>
+								<exclude>META-INF/*.DSA</exclude>
+								<exclude>META-INF/*.RSA</exclude>
+							</excludes>
+						</filter>
+					</filters>
+					<finalName>uber-${project.artifactId}-${project.version}</finalName>
+				</configuration>
+			</plugin>
+
+
+
+		</plugins>
+	</build>
+</project>
+
+     
