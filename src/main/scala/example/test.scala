@@ -59,7 +59,8 @@ case class professor(id:Integer, name:String, course:String)
 case class studentProfessor(studentID:Integer, professorID:Integer)
 
 object test {
-   
+  
+    
   def main(args : Array[String]) {
 
     // handle command line args
@@ -94,12 +95,27 @@ object test {
     var studentProfessorDF = studentProfessorList.toDF()
     var professorDF = professorList.toDF()
     
-    // write to hive table while doing dev to support Hive SQL testing via Cloudera Hue interface 
+    // write to hive tables to utilize Hue interface while writing query 
+    //(for example purposes only -- during runtime once query built could stick with df's / tempviews rather than writing to hive) 
     studentDF.write.mode(SaveMode.Overwrite).saveAsTable("%s.student".format(DB))
     studentProfessorDF.write.mode(SaveMode.Overwrite).saveAsTable("%s.studentProfessor".format(DB))
     professorDF.write.mode(SaveMode.Overwrite).saveAsTable("%s.professor".format(DB))
     
     //write a SQL query that finds all the Professors for each Student.
-    
+    var query = spark.sql("SELECT student.name student_name, professor.name professor_name FROM example.student INNER JOIN example.studentprofessor ON student.id=studentprofessor.studentid INNER JOIN example.professor ON studentprofessor.professorid=professor.id")
+    query.show()
+    /*
+      +------------+--------------+
+      |student_name|professor_name|
+      +------------+--------------+
+      |        Anne|      Einstein|
+      |        Anne|     Mr. Smith|
+      |      Robert|   Professor X|
+      |       Ralph|      Einstein|
+      |       Ralph|    Mrs. Smith|
+      |       Ralph|     Mr. Smith|
+      +------------+--------------+    
+     */
+       
   }
 }
