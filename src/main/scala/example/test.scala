@@ -50,7 +50,7 @@ import scala.collection.mutable._
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
 import org.apache.spark.storage.StorageLevel
-import org.apache.spark.sql.{Row,Column, SparkSession}
+import org.apache.spark.sql.{Row, Column, SparkSession}
 import org.apache.spark.sql.SaveMode
 
 
@@ -59,8 +59,6 @@ case class professor(id:Integer, name:String, course:String)
 case class studentProfessor(studentID:Integer, professorID:Integer)
 
 object test {
-  
-
     
   def main(args : Array[String]) {
 
